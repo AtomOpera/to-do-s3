@@ -1,0 +1,31 @@
+{
+  "modules": {
+    "generalPages": [
+      {
+        "url": "/index.html",
+        "name": {
+          "value": "To Do S3"
+        },
+        "key": "my-general-page"
+      }
+    ]
+  },
+  "key": "my-app-key",
+  "name": "To Do S3",
+  "description": "A connect app that does something",
+  "vendor": {
+    "name": "My Company",
+    "url": "http://www.example.com"
+  },
+  "links": {
+    "self": "https://8c14011583df.eu.ngrok.io/atlassian-connect.json"
+  },
+  "baseUrl": "https://8c14011583df.eu.ngrok.io",
+  "scopes": [
+    "read",
+    "write"
+  ],
+  "authentication": {
+    "type": "none"
+  }
+}
