@@ -18,9 +18,9 @@
     "url": "http://www.example.com"
   },
   "links": {
-    "self": "https://8c14011583df.eu.ngrok.io/atlassian-connect.json"
+    "self": "https://d4b022f32cf9.eu.ngrok.io/atlassian-connect.json"
   },
-  "baseUrl": "https://8c14011583df.eu.ngrok.io",
+  "baseUrl": "https://d4b022f32cf9.eu.ngrok.io",
   "scopes": [
     "read",
     "write"

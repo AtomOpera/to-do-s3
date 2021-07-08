@@ -7,8 +7,8 @@ import Form, { Field, FormFooter, HelperMessage } from '@atlaskit/form';
 
 function App() {
   const [newItem, setNewItem] = useState('');
-  const [toDos, setToDos] = useState([{text:'test', checked: false}]);
-  const [loggedUser, setLoggedUser] = useState('');
+  const [toDos, setToDos] = useState(['Loading']); // ['Loading']); // [{text:'test', checked: false}]);
+  const [loggedUser, setLoggedUser] = useState();
   const prettyToDos = JSON.stringify(toDos,null,2);
 
   // To do:
@@ -18,10 +18,10 @@ function App() {
   useEffect(() => {
     // get user property
     async function call() {
-      const loggedUser = await getLoggedInUser();
-      console.log({ loggedUser });
+      const currentLoggedUser = loggedUser ? loggedUser : await getLoggedInUser();
+      // console.log({ loggedUser });
       const res = await AP.request({
-        url: `/rest/api/3/user/properties/to-do?accountId=${loggedUser}`,
+        url: `/rest/api/3/user/properties/to-do?accountId=${currentLoggedUser}`,
         type: 'GET',
         // data: JSON.stringify(toDos),
         contentType: 'application/json',
@@ -56,25 +56,39 @@ function App() {
     });
     const parsedRes = await JSON.parse(res.body);
     alert(JSON.stringify(parsedRes.value));
-    console.log(loggedUser);
+    // console.log(loggedUser);
   };
 
-  const onSumbit = () => {
-    setToDos([...toDos, {
-      text: newItem,
-      checked: false,
-    }]);
+  const deleteAll = () => {
+    const newToDos = [];
+    setToDos(newToDos);
     setNewItem('');
     // set user property
     AP.request({
       url: `/rest/api/3/user/properties/to-do?accountId=${loggedUser}`,
       type: 'PUT',
-      data: JSON.stringify(toDos),
+      data: JSON.stringify(newToDos),
       contentType: 'application/json',
     });
   };
 
-  console.log(toDos);
+  const onSumbit = () => {
+    const newToDos = [...toDos, {
+      text: newItem,
+      checked: false,
+    }];
+    setToDos(newToDos);
+    setNewItem('');
+    // set user property
+    AP.request({
+      url: `/rest/api/3/user/properties/to-do?accountId=${loggedUser}`,
+      type: 'PUT',
+      data: JSON.stringify(newToDos),
+      contentType: 'application/json',
+    });
+  };
+
+  // console.log(toDos);
   return (
     <div className="App">
       {toDos.map((toDo, index) =>
@@ -106,9 +120,15 @@ function App() {
         appearance="primary"
         onClick={() => {
           onRead();
-          getLoggedInUser();
         }}
       >Read</Button>
+      <Button
+        type="submit"
+        appearance="primary"
+        onClick={() => {
+          deleteAll();
+        }}
+      >Delete All</Button>
       <div>
         ToDos: {" "} {prettyToDos}
       </div>
