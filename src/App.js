@@ -33,6 +33,8 @@ function App() {
     call();    
   },[]);
 
+
+
   async function getLoggedInUser() {
     const res = await AP.request('/rest/api/3/myself');
     const user = JSON.parse(res.body);
@@ -79,13 +81,25 @@ function App() {
     }];
     setToDos(newToDos);
     setNewItem('');
-    // set user property
-    AP.request({
-      url: `/rest/api/3/user/properties/to-do?accountId=${loggedUser}`,
-      type: 'PUT',
-      data: JSON.stringify(newToDos),
-      contentType: 'application/json',
+
+    AP.user.getCurrentUser((user)=>{
+
+      AP.request({
+        url: `/rest/api/3/user/properties/to-do?accountId=${user.atlassianAccountId}`,
+        type: 'PUT',
+        data: JSON.stringify(newToDos),
+        contentType: 'application/json',
+      });
+
     });
+
+    // set user property
+    // AP.request({
+    //   url: `/rest/api/3/user/properties/to-do?accountId=${loggedUser}`,
+    //   type: 'PUT',
+    //   data: JSON.stringify(newToDos),
+    //   contentType: 'application/json',
+    // });
   };
 
   // console.log(toDos);
