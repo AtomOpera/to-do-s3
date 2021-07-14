@@ -82,6 +82,9 @@ function App() {
     setToDos(newToDos);
     setNewItem('');
 
+    // this can be done with promises
+
+    // callback style
     AP.user.getCurrentUser((user)=>{
 
       AP.request({
@@ -105,6 +108,13 @@ function App() {
   // console.log(toDos);
   return (
     <div className="App">
+
+      {!toDos && (
+        <div>Loading...</div>
+      )}
+
+      
+
       {toDos.map((toDo, index) =>
         <Checkbox
           key={index}
